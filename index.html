@@ -259,7 +259,7 @@
 
     .ticket {
       position: absolute;
-      top: 56.5%;
+      top: 53.5%;
       left: 14px;
       right: 14px;
       z-index: 2;
@@ -344,6 +344,84 @@
       background: linear-gradient(90deg, var(--accent-2), var(--accent));
       border-radius: 999px;
       transition: width 0.5s ease;
+    }
+
+    /* Canlı Not Kapsülü Mesaj Baloncukları */
+    .live-bubbles {
+      position: absolute;
+      top: 71.2%;
+      left: 14px;
+      right: 14px;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      pointer-events: none;
+    }
+    .chat-bubble {
+      pointer-events: auto;
+      max-width: 84%;
+      background: rgba(22, 14, 38, 0.62);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      padding: 8px 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.25s ease;
+      animation: popBubble 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .chat-bubble:active {
+      transform: scale(0.97);
+    }
+    @keyframes popBubble {
+      from { opacity: 0; transform: translateY(8px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .chat-bubble.barry {
+      align-self: flex-start;
+      border-radius: 16px 16px 16px 4px;
+      border-left: 3px solid #60a5fa;
+    }
+    .chat-bubble.marry {
+      align-self: flex-end;
+      border-radius: 16px 16px 4px 16px;
+      border-right: 3px solid #f472b6;
+    }
+    .bubble-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 10.5px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+    .chat-bubble.barry .bubble-sender { color: #93c5fd; }
+    .chat-bubble.marry .bubble-sender { color: #f9a8d4; }
+    .bubble-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 9.5px;
+      font-weight: 600;
+    }
+    .bubble-close {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 0 2px;
+    }
+    .bubble-body {
+      font-size: 12.5px;
+      line-height: 1.32;
+      color: #ffffff;
+      font-weight: 600;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+      word-break: break-word;
     }
 
     .clocks {
@@ -738,6 +816,31 @@
       </div>
     </div>
 
+    <!-- Canlı Not Kapsülü Mesaj Baloncukları -->
+    <div class="live-bubbles" id="live-bubbles">
+      <div class="chat-bubble barry" id="bubble-barry" style="display:none" onclick="openCapsuleModal()">
+        <div class="bubble-head">
+          <span class="bubble-sender">💙 Barry</span>
+          <div class="bubble-meta">
+            <span id="bubble-barry-time"></span>
+            <button class="bubble-close" onclick="event.stopPropagation();hideBubble('barry')" title="Gizle">✕</button>
+          </div>
+        </div>
+        <div class="bubble-body" id="bubble-barry-text"></div>
+      </div>
+
+      <div class="chat-bubble marry" id="bubble-marry" style="display:none" onclick="openCapsuleModal()">
+        <div class="bubble-head">
+          <span class="bubble-sender">💖 Marry</span>
+          <div class="bubble-meta">
+            <span id="bubble-marry-time"></span>
+            <button class="bubble-close" onclick="event.stopPropagation();hideBubble('marry')" title="Gizle">✕</button>
+          </div>
+        </div>
+        <div class="bubble-body" id="bubble-marry-text"></div>
+      </div>
+    </div>
+
     <div class="clocks">
       <div class="clock-card">
         <div class="clock-city">🇹🇷 İstanbul</div>
@@ -1089,9 +1192,47 @@
     let diceOptions = [...defaultDice];
     let lastPing = null;
     let capsules = { barry: "", barryTs: "", marry: "", marryTs: "" };
+    let dismissedCapsules = {
+      barry: localStorage.getItem('mb_hide_barry') || "",
+      marry: localStorage.getItem('mb_hide_marry') || ""
+    };
     let customPhotos = [null, null, null, null, null, null];
     let seenPingTs = Number(localStorage.getItem('mb_seen_ping_ts') || '0');
     let pollTimer = null;
+
+    function renderLiveBubbles() {
+      const bEl = document.getElementById('bubble-barry');
+      const mEl = document.getElementById('bubble-marry');
+
+      const bSig = (capsules.barry || "") + "|" + (capsules.barryTs || "");
+      if (capsules.barry && capsules.barry.trim() !== "" && dismissedCapsules.barry !== bSig) {
+        document.getElementById('bubble-barry-text').textContent = capsules.barry;
+        document.getElementById('bubble-barry-time').textContent = capsules.barryTs || "";
+        bEl.style.display = 'block';
+      } else {
+        bEl.style.display = 'none';
+      }
+
+      const mSig = (capsules.marry || "") + "|" + (capsules.marryTs || "");
+      if (capsules.marry && capsules.marry.trim() !== "" && dismissedCapsules.marry !== mSig) {
+        document.getElementById('bubble-marry-text').textContent = capsules.marry;
+        document.getElementById('bubble-marry-time').textContent = capsules.marryTs || "";
+        mEl.style.display = 'block';
+      } else {
+        mEl.style.display = 'none';
+      }
+    }
+
+    function hideBubble(who) {
+      if (who === 'barry') {
+        dismissedCapsules.barry = (capsules.barry || "") + "|" + (capsules.barryTs || "");
+        localStorage.setItem('mb_hide_barry', dismissedCapsules.barry);
+      } else {
+        dismissedCapsules.marry = (capsules.marry || "") + "|" + (capsules.marryTs || "");
+        localStorage.setItem('mb_hide_marry', dismissedCapsules.marry);
+      }
+      renderLiveBubbles();
+    }
 
     function applyPhotosToCollage() {
       for (let i = 0; i < 6; i++) {
@@ -1119,6 +1260,7 @@
           }
           if (data.record.capsules) {
             capsules = { ...capsules, ...data.record.capsules };
+            renderLiveBubbles();
           }
           if (Array.isArray(data.record.customPhotos) && data.record.customPhotos.length === 6) {
             customPhotos = data.record.customPhotos;
@@ -1329,10 +1471,19 @@
       const newBarry = document.getElementById('barry-note-input').value.trim();
       const newMarry = document.getElementById('marry-note-input').value.trim();
       const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      if (newBarry !== (capsules.barry || "")) capsules.barryTs = nowStr;
-      if (newMarry !== (capsules.marry || "")) capsules.marryTs = nowStr;
+      if (newBarry !== (capsules.barry || "")) {
+        capsules.barryTs = nowStr;
+        dismissedCapsules.barry = "";
+        localStorage.removeItem('mb_hide_barry');
+      }
+      if (newMarry !== (capsules.marry || "")) {
+        capsules.marryTs = nowStr;
+        dismissedCapsules.marry = "";
+        localStorage.removeItem('mb_hide_marry');
+      }
       capsules.barry = newBarry;
       capsules.marry = newMarry;
+      renderLiveBubbles();
       closeCapsuleModal();
       triggerToast(currentLang === 'tr' ? "📝 Not kapsülü güncellendi!" : "📝 Note capsule saved!", 2800);
       await pushToCloud();
