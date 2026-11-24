@@ -43,7 +43,6 @@
       position: relative;
     }
 
-    /* Arka Plan 6'lı Fotoğraf Izgarası */
     .collage-bg {
       position: absolute;
       inset: 0;
@@ -71,7 +70,6 @@
       pointer-events: none;
     }
 
-    /* Üst Bar */
     .topbar {
       position: absolute;
       top: 14px;
@@ -139,7 +137,6 @@
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
     }
 
-    /* Aşk Notu Balonu */
     .love-toast {
       position: absolute;
       top: 52px;
@@ -166,7 +163,6 @@
       transform: translateY(0);
     }
 
-    /* 1. Satırın tam bitişine yaslı Tokyo Reunion başlığı */
     .hero {
       position: absolute;
       bottom: 67.2%;
@@ -209,7 +205,6 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* 2. Satırın en tepesine yaslı sayaçlar */
     .grid {
       position: absolute;
       top: 34%;
@@ -246,7 +241,6 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* 2. Satırın alt çizgisindeki uçuş kartı */
     .ticket {
       position: absolute;
       top: 56.5%;
@@ -336,7 +330,6 @@
       transition: width 0.5s ease;
     }
 
-    /* En alt sıradaki ortalanmış saat + hava durumu kartları */
     .clocks {
       position: absolute;
       bottom: 16px;
@@ -379,7 +372,7 @@
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
 
-    /* Bucket List Açılır Penceresi (Modal) */
+    /* Bucket List Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -406,9 +399,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 4px;
     }
     .modal-head h3 { font-size: 18px; color: #fff; }
+    .sync-status {
+      font-size: 11px;
+      color: #f9a8d4;
+      margin-bottom: 10px;
+    }
     .close-btn {
       background: rgba(255,255,255,0.14);
       border: none;
@@ -475,7 +473,6 @@
       cursor: pointer;
     }
 
-    /* Sakura & Kalp Konfeti Kanvası */
     #confetti-canvas {
       position: fixed;
       inset: 0;
@@ -562,13 +559,14 @@
     </div>
   </div>
 
-  <!-- Tokyo Bucket List Penceresi -->
+  <!-- Ortak Tokyo Bucket List Penceresi -->
   <div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeModal()">
     <div class="modal-card">
       <div class="modal-head">
         <h3 id="modal-title">Tokyo Buluşma Planı ❤️</h3>
         <button class="close-btn" onclick="closeModal()">✕</button>
       </div>
+      <div class="sync-status" id="sync-status">● Canlı ortak liste</div>
       <ul class="todo-list" id="todo-list"></ul>
       <div class="add-row">
         <input type="text" id="todo-input" placeholder="Yeni plan ekle..." onkeypress="if(event.key==='Enter')addTodo()">
@@ -578,6 +576,11 @@
   </div>
 
   <script>
+    // ====== JSONBIN CANLI ORTAK LİSTE AYARLARI ======
+    const JSONBIN_ID = "6b05ff20ac6210605aa1c454";
+    const JSONBIN_KEY = "$2a$10$TdiR7f6Dsf98mnzpBl9o3Ov44fVomZUrDxN6xaqYBMIZOzz9agw0m";
+    // ================================================
+
     const TARGET_UTC = Date.UTC(2026, 11, 19, 4, 35, 0);
     const START_UTC = Date.UTC(2026, 9, 1, 0, 0, 0);
     let currentLang = 'tr';
@@ -592,6 +595,7 @@
         prog: "Yolculuk İlerlemesi", share: "Paylaş", copied: "Kopyalandı!",
         planBtn: "Tokyo Planı 📋", modalTitle: "Tokyo Buluşma Planı ❤️",
         placeholder: "Yeni plan ekle...", add: "Ekle",
+        syncOk: "● Ortak liste senkronize", syncing: "↻ Kaydediliyor...",
         loveNotes: [
           "T3 çıkış kapısında ilk sarılma için geri sayım başladı! ❤️",
           "Nerima sokaklarında el ele yürümeye çok az kaldı 🌸",
@@ -607,6 +611,7 @@
         prog: "Journey Progress", share: "Share", copied: "Copied!",
         planBtn: "Tokyo Plan 📋", modalTitle: "Tokyo Bucket List ❤️",
         placeholder: "Add a new plan...", add: "Add",
+        syncOk: "● Shared list synced", syncing: "↻ Saving...",
         loveNotes: [
           "Counting down to our first hug at Haneda T3! ❤️",
           "Walking hand in hand through Nerima very soon 🌸",
@@ -635,6 +640,7 @@
       document.getElementById('modal-title').textContent = t.modalTitle;
       document.getElementById('todo-input').placeholder = t.placeholder;
       document.getElementById('add-btn').textContent = t.add;
+      document.getElementById('sync-status').textContent = t.syncOk;
       update();
     }
 
@@ -684,7 +690,6 @@
       }
     }
 
-    /* Aşk Notu Balonu */
     let noteIdx = 0;
     let toastTimer;
     function showLoveNote() {
@@ -697,7 +702,6 @@
       toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
     }
 
-    /* Canlı Hava Durumu (İstanbul & Tokyo) */
     function weatherIcon(code) {
       if (code === 0) return '☀️';
       if (code <= 3) return '⛅';
@@ -725,14 +729,58 @@
       } catch (e) {}
     }
 
-    /* Bucket List Yönetimi (v2) */
+    /* Canlı Ortak Bucket List (JSONBin Senkronizasyonu) */
     const defaultTodos = [
       { text: "Haneda T3 ilk sarılma 🤗", done: false },
       { text: "Photo booth'ta tatlı foto çekimi 📸", done: false },
       { text: "Nerima'da gece ramen & yürüyüş 🍜", done: false },
       { text: "Yeni yıl dileği & fotoğraf çekimi ✨", done: false }
     ];
-    let todos = JSON.parse(localStorage.getItem('mb_tokyo_todos_v2') || 'null') || defaultTodos;
+    let todos = [...defaultTodos];
+    let pollTimer = null;
+
+    function isCloudConfigured() {
+      return JSONBIN_ID && !JSONBIN_ID.includes("BURAYA") && JSONBIN_KEY && !JSONBIN_KEY.includes("BURAYA");
+    }
+
+    async function fetchCloudTodos() {
+      if (!isCloudConfigured()) {
+        todos = JSON.parse(localStorage.getItem('mb_tokyo_todos_v2') || 'null') || defaultTodos;
+        renderTodos();
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
+          headers: { 'X-Master-Key': JSONBIN_KEY }
+        });
+        const data = await res.json();
+        if (data && data.record && Array.isArray(data.record.todos)) {
+          todos = data.record.todos;
+          renderTodos();
+        }
+      } catch (e) {}
+    }
+
+    async function saveCloudTodos() {
+      renderTodos();
+      if (!isCloudConfigured()) {
+        localStorage.setItem('mb_tokyo_todos_v2', JSON.stringify(todos));
+        return;
+      }
+      const st = document.getElementById('sync-status');
+      st.textContent = i18n[currentLang].syncing;
+      try {
+        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': JSONBIN_KEY
+          },
+          body: JSON.stringify({ todos })
+        });
+        st.textContent = i18n[currentLang].syncOk;
+      } catch (e) {}
+    }
 
     function renderTodos() {
       const list = document.getElementById('todo-list');
@@ -741,28 +789,36 @@
         const li = document.createElement('li');
         li.className = 'todo-item' + (item.done ? ' done' : '');
         li.innerHTML = `<span>${item.done ? '✅' : '⬜'} ${item.text}</span><button class="del-item" onclick="event.stopPropagation();delTodo(${i})">✕</button>`;
-        li.onclick = () => { todos[i].done = !todos[i].done; saveTodos(); };
+        li.onclick = () => { todos[i].done = !todos[i].done; saveCloudTodos(); };
         list.appendChild(li);
       });
     }
-    function saveTodos() {
-      localStorage.setItem('mb_tokyo_todos_v2', JSON.stringify(todos));
-      renderTodos();
-    }
+
     function addTodo() {
       const inp = document.getElementById('todo-input');
       const val = inp.value.trim();
       if (!val) return;
       todos.push({ text: val, done: false });
       inp.value = '';
-      saveTodos();
+      saveCloudTodos();
     }
+
     function delTodo(i) {
       todos.splice(i, 1);
-      saveTodos();
+      saveCloudTodos();
     }
-    function openModal() { renderTodos(); document.getElementById('modal').classList.add('open'); }
-    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    function openModal() {
+      renderTodos();
+      fetchCloudTodos();
+      document.getElementById('modal').classList.add('open');
+      pollTimer = setInterval(fetchCloudTodos, 5000);
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+      clearInterval(pollTimer);
+    }
 
     /* Özel Vektörel Sakura Yaprağı & Kalp Animasyonu */
     const canvas = document.getElementById('confetti-canvas');
@@ -850,6 +906,7 @@
     update();
     setInterval(update, 1000);
     loadWeather();
+    fetchCloudTodos();
     setTimeout(showLoveNote, 1200);
   </script>
 </body>
