@@ -12,8 +12,8 @@
     }
 
     :root {
-      --glass: rgba(15, 10, 28, 0.38);
-      --glass-strong: rgba(15, 10, 28, 0.50);
+      --glass: rgba(15, 10, 28, 0.36);
+      --glass-strong: rgba(15, 10, 28, 0.48);
       --border: rgba(255, 255, 255, 0.35);
       --accent: #f472b6;
       --accent-2: #a78bfa;
@@ -35,12 +35,12 @@
       overflow-x: hidden;
     }
 
-    /* Sabit Oranlı Ana Sahne */
+    /* 150vh yükseklik: Her satır %50 ekran kaplar, yüzlerin altında geniş boşluk açılır */
     .stage {
       width: 100%;
       max-width: 500px;
-      height: 100vh;
-      min-height: 760px;
+      height: 150vh;
+      min-height: 1120px;
       position: relative;
     }
 
@@ -60,7 +60,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 20%;
+      object-position: center 15%;
       border-radius: 16px;
     }
 
@@ -72,7 +72,7 @@
       pointer-events: none;
     }
 
-    /* Üst Bar: Tüm butonlar sola yaslı (sağ üstteki yüz tamamen açık) */
+    /* Üst Bar: Sol üstte toplu */
     .topbar {
       position: absolute;
       top: 14px;
@@ -136,10 +136,10 @@
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
     }
 
-    /* 1. Blok: Tokyo Reunion + 4 Sayaç (Üst satırın alt boşluğunda sabit) */
+    /* 1. Blok: 1. Satırın (%0-%33.3) en altındaki boşluğa oturur */
     .top-cluster {
       position: absolute;
-      top: 19.5%;
+      top: 21%;
       left: 14px;
       right: 14px;
       z-index: 2;
@@ -214,10 +214,10 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* 2. Blok: Uçuş Kartı (Orta satırın en altındaki tişört/çimen hizasına indirildi) */
+    /* 2. Blok: 2. Satırın (%33.3-%66.6) en alt çizgisine iner */
     .ticket {
       position: absolute;
-      top: 56%;
+      top: 56.5%;
       left: 14px;
       right: 14px;
       z-index: 2;
@@ -226,7 +226,7 @@
       -webkit-backdrop-filter: blur(3px);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 9px 12px;
+      padding: 10px 12px;
     }
     .ticket-top {
       display: flex;
@@ -293,10 +293,10 @@
       transition: width 0.5s ease;
     }
 
-    /* 3. Blok: Saat Kartları (En alt sıradaki beyaz tişört ve bluz hizasına sabitlendi) */
+    /* 3. Blok: En alt sıranın tişört/bluz boşluğunda */
     .clocks {
       position: absolute;
-      bottom: 14px;
+      bottom: 16px;
       left: 14px;
       right: 14px;
       z-index: 2;
@@ -310,7 +310,7 @@
       -webkit-backdrop-filter: blur(2.5px);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 7px 11px;
+      padding: 8px 12px;
     }
     .clock-city {
       font-size: 10px;
@@ -320,7 +320,7 @@
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
     .clock-time {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
       color: #ffffff;
       font-variant-numeric: tabular-nums;
