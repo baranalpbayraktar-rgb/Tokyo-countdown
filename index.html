@@ -725,14 +725,14 @@
       } catch (e) {}
     }
 
-    /* Bucket List Yönetimi */
+    /* Bucket List Yönetimi (v2) */
     const defaultTodos = [
       { text: "Haneda T3 ilk sarılma 🤗", done: false },
-      { text: "Winter Comiket & Cosplay günü 🎭", done: false },
+      { text: "Photo booth'ta tatlı foto çekimi 📸", done: false },
       { text: "Nerima'da gece ramen & yürüyüş 🍜", done: false },
       { text: "Yeni yıl dileği & fotoğraf çekimi ✨", done: false }
     ];
-    let todos = JSON.parse(localStorage.getItem('mb_tokyo_todos') || 'null') || defaultTodos;
+    let todos = JSON.parse(localStorage.getItem('mb_tokyo_todos_v2') || 'null') || defaultTodos;
 
     function renderTodos() {
       const list = document.getElementById('todo-list');
@@ -746,7 +746,7 @@
       });
     }
     function saveTodos() {
-      localStorage.setItem('mb_tokyo_todos', JSON.stringify(todos));
+      localStorage.setItem('mb_tokyo_todos_v2', JSON.stringify(todos));
       renderTodos();
     }
     function addTodo() {
@@ -764,25 +764,56 @@
     function openModal() { renderTodos(); document.getElementById('modal').classList.add('open'); }
     function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
-    /* Sakura & Kalp Konfeti Efekti */
+    /* Özel Vektörel Sakura Yaprağı & Kalp Animasyonu */
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
     let petals = [];
     let animId = null;
 
+    function drawSakuraPetal(ctx, size, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-size * 0.6, -size * 0.4, -size * 0.5, -size * 1.2, 0, -size * 1.4);
+      ctx.lineTo(0, -size * 1.15);
+      ctx.lineTo(size * 0.12, -size * 1.38);
+      ctx.bezierCurveTo(size * 0.55, -size * 1.15, size * 0.6, -size * 0.4, 0, 0);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawHeart(ctx, size, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      const s = size * 0.55;
+      ctx.moveTo(0, s * 0.4);
+      ctx.bezierCurveTo(-s, -s * 0.4, -s * 1.8, s * 0.6, 0, s * 1.7);
+      ctx.bezierCurveTo(s * 1.8, s * 0.6, s, -s * 0.4, 0, s * 0.4);
+      ctx.closePath();
+      ctx.fill();
+    }
+
     function burstConfetti() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const icons = ['🌸', '❤️', '💖', '✨'];
-      for (let i = 0; i < 45; i++) {
+      const sakuraColors = ['rgba(255, 183, 213, 0.92)', 'rgba(255, 214, 232, 0.92)', 'rgba(249, 168, 212, 0.9)'];
+      const heartColors = ['rgba(244, 63, 94, 0.88)', 'rgba(236, 72, 153, 0.88)'];
+
+      for (let i = 0; i < 55; i++) {
+        const isHeart = Math.random() < 0.35;
         petals.push({
           x: Math.random() * canvas.width,
-          y: -20 - Math.random() * 200,
-          size: 14 + Math.random() * 14,
-          speedY: 1.5 + Math.random() * 2.5,
-          speedX: (Math.random() - 0.5) * 1.8,
-          rot: Math.random() * 360,
-          icon: icons[Math.floor(Math.random() * icons.length)]
+          y: -20 - Math.random() * 240,
+          size: isHeart ? (8 + Math.random() * 6) : (10 + Math.random() * 8),
+          speedY: 1.3 + Math.random() * 2.0,
+          speedX: (Math.random() - 0.5) * 1.4,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.06,
+          sway: Math.random() * Math.PI * 2,
+          isHeart,
+          color: isHeart
+            ? heartColors[Math.floor(Math.random() * heartColors.length)]
+            : sakuraColors[Math.floor(Math.random() * sakuraColors.length)]
         });
       }
       if (!animId) animatePetals();
@@ -792,11 +823,23 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       petals.forEach(p => {
         p.y += p.speedY;
-        p.x += p.speedX + Math.sin(p.y / 30) * 0.6;
-        ctx.font = `${p.size}px serif`;
-        ctx.fillText(p.icon, p.x, p.y);
+        p.sway += 0.03;
+        p.x += p.speedX + Math.sin(p.sway) * 0.7;
+        p.rot += p.rotSpeed;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.shadowColor = 'rgba(244, 114, 182, 0.45)';
+        ctx.shadowBlur = 6;
+        if (p.isHeart) {
+          drawHeart(ctx, p.size, p.color);
+        } else {
+          drawSakuraPetal(ctx, p.size, p.color);
+        }
+        ctx.restore();
       });
-      petals = petals.filter(p => p.y < canvas.height + 30);
+      petals = petals.filter(p => p.y < canvas.height + 35);
       if (petals.length > 0) {
         animId = requestAnimationFrame(animatePetals);
       } else {
