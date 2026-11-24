@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marry & Barry — Tokyo Reunion ❤️</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     @font-face {
       font-family: 'CustomFont';
@@ -41,6 +42,7 @@
       height: 150vh;
       min-height: 1120px;
       position: relative;
+      background-color: #160e26;
     }
 
     .collage-bg {
@@ -74,22 +76,23 @@
       position: absolute;
       top: 14px;
       left: 14px;
+      right: 14px;
       z-index: 4;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
     }
 
     .brand {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
-      letter-spacing: 1.4px;
+      letter-spacing: 1.3px;
       color: #ffffff;
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
-      padding: 6px 11px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
@@ -112,9 +115,9 @@
       background: transparent;
       border: none;
       color: #f1f5f9;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 4px 8px;
+      padding: 4px 7px;
       border-radius: 999px;
       cursor: pointer;
     }
@@ -131,7 +134,7 @@
       color: #ffffff;
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 10px;
+      padding: 6px 9px;
       border-radius: 999px;
       cursor: pointer;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
@@ -139,20 +142,21 @@
 
     .love-toast {
       position: absolute;
-      top: 52px;
+      top: 54px;
       left: 14px;
       right: 14px;
-      z-index: 5;
-      background: rgba(20, 12, 36, 0.88);
+      z-index: 6;
+      background: rgba(24, 12, 42, 0.92);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(244, 114, 182, 0.6);
+      border: 1px solid rgba(244, 114, 182, 0.7);
       border-radius: 16px;
-      padding: 10px 14px;
-      font-size: 13px;
+      padding: 11px 14px;
+      font-size: 13.5px;
+      font-weight: 700;
       color: #ffe4f2;
       text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.75);
       opacity: 0;
       transform: translateY(-6px);
       pointer-events: none;
@@ -346,7 +350,7 @@
       -webkit-backdrop-filter: blur(2.5px);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 9px 10px;
+      padding: 8px 10px;
       text-align: center;
     }
     .clock-city {
@@ -371,13 +375,20 @@
       font-weight: 600;
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
+    .mood-line {
+      font-size: 10px;
+      color: #f9a8d4;
+      margin-top: 2px;
+      font-weight: 700;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
+    }
 
-    /* Bucket List Modal */
+    /* Modallar */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 20;
-      background: rgba(9, 6, 18, 0.72);
+      background: rgba(9, 6, 18, 0.75);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       display: none;
@@ -389,11 +400,11 @@
     .modal-card {
       width: 100%;
       max-width: 400px;
-      background: rgba(22, 14, 38, 0.95);
+      background: rgba(22, 14, 38, 0.96);
       border: 1px solid var(--border);
       border-radius: 22px;
       padding: 18px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.85);
     }
     .modal-head {
       display: flex;
@@ -422,9 +433,10 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 240px;
+      max-height: 230px;
       overflow-y: auto;
       margin-bottom: 12px;
+      position: relative;
     }
     .todo-item {
       display: flex;
@@ -433,20 +445,50 @@
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 12px;
-      padding: 9px 12px;
+      padding: 9px 10px;
       font-size: 13px;
       cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
     }
-    .todo-item.done span {
+    .todo-item.dragging {
+      opacity: 0.92;
+      background: rgba(244, 114, 182, 0.28);
+      border-color: var(--accent);
+      transform: scale(1.02);
+      z-index: 5;
+    }
+    .todo-text {
+      flex: 1;
+      padding-right: 6px;
+    }
+    .todo-item.done .todo-text {
       text-decoration: line-through;
       opacity: 0.55;
+    }
+    .todo-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .drag-handle {
+      color: #f9a8d4;
+      font-size: 15px;
+      letter-spacing: -1px;
+      padding: 2px 6px;
+      cursor: grab;
+      touch-action: none;
+    }
+    .drag-handle:active {
+      cursor: grabbing;
     }
     .del-item {
       background: transparent;
       border: none;
       color: #fda4af;
       font-size: 13px;
-      padding-left: 8px;
+      padding: 2px 4px;
       cursor: pointer;
     }
     .add-row {
@@ -473,6 +515,57 @@
       cursor: pointer;
     }
 
+    /* Zar & Kalp Gönderme Özel Stilleri */
+    .dice-box {
+      background: rgba(244, 114, 182, 0.16);
+      border: 1px solid rgba(244, 114, 182, 0.45);
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .dice-result {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffe4f2;
+      margin-bottom: 10px;
+      min-height: 24px;
+    }
+    .roll-btn {
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 9px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .ping-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .ping-card-btn {
+      background: rgba(244, 114, 182, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 16px;
+      padding: 14px 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+    }
+    .ping-card-btn span {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #ffe4f2;
+      margin-top: 4px;
+    }
+
     #confetti-canvas {
       position: fixed;
       inset: 0;
@@ -484,7 +577,7 @@
 <body>
   <canvas id="confetti-canvas"></canvas>
 
-  <div class="stage">
+  <div class="stage" id="capture-area">
     <div class="collage-bg">
       <img src="1.jpg" alt="">
       <img src="2.jpg" alt="">
@@ -495,13 +588,15 @@
     </div>
     <div class="overlay"></div>
 
-    <div class="topbar">
+    <div class="topbar" id="topbar-ui">
       <div class="brand" onclick="showLoveNote()"><span>●</span> MARRY <span>♥</span> BARRY</div>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</button>
         <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
       </div>
-      <button class="icon-btn" id="share-btn" onclick="shareLink()">Paylaş</button>
+      <button class="icon-btn" onclick="openPingModal()" title="Kalp Gönder">💌</button>
+      <button class="icon-btn" onclick="openDiceModal()" title="Aktivite Zarı">🎲</button>
+      <button class="icon-btn" onclick="downloadPoster()" title="Görsel İndir">📸</button>
       <button class="icon-btn" onclick="burstConfetti()" title="Sakura">🌸</button>
     </div>
 
@@ -550,23 +645,25 @@
         <div class="clock-city">🇹🇷 İstanbul</div>
         <div class="clock-time" id="clock-ist">--:--:--</div>
         <div class="weather-line" id="weather-ist">🌤️ --°C</div>
+        <div class="mood-line" id="mood-ist">🌙 Gece modu</div>
       </div>
       <div class="clock-card">
         <div class="clock-city">🇯🇵 Tokyo</div>
         <div class="clock-time" id="clock-tyo">--:--:--</div>
         <div class="weather-line" id="weather-tyo">🌸 --°C</div>
+        <div class="mood-line" id="mood-tyo">☀️ Güne başlıyor</div>
       </div>
     </div>
   </div>
 
-  <!-- Ortak Tokyo Bucket List Penceresi -->
+  <!-- 1. Ortak Tokyo Bucket List Penceresi -->
   <div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeModal()">
     <div class="modal-card">
       <div class="modal-head">
         <h3 id="modal-title">Tokyo Buluşma Planı ❤️</h3>
         <button class="close-btn" onclick="closeModal()">✕</button>
       </div>
-      <div class="sync-status" id="sync-status">● Canlı ortak liste</div>
+      <div class="sync-status" id="sync-status">● Ortak liste senkronize • Sıralamak için ⋮⋮ sürükle</div>
       <ul class="todo-list" id="todo-list"></ul>
       <div class="add-row">
         <input type="text" id="todo-input" placeholder="Yeni plan ekle..." onkeypress="if(event.key==='Enter')addTodo()">
@@ -575,16 +672,56 @@
     </div>
   </div>
 
+  <!-- 2. Canlı Kalp Pingi Penceresi -->
+  <div class="modal-backdrop" id="ping-modal" onclick="if(event.target===this)closePingModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="ping-title">Canlı Özledim Pingi 💌</h3>
+        <button class="close-btn" onclick="closePingModal()">✕</button>
+      </div>
+      <div class="sync-status" id="last-ping-info">Henüz yeni ping yok</div>
+      <div class="ping-grid">
+        <button class="ping-card-btn" onclick="sendHeartPing('Barry')">
+          Barry → Marry ❤️
+          <span>"Seni çok özledim!"</span>
+        </button>
+        <button class="ping-card-btn" onclick="sendHeartPing('Marry')">
+          Marry → Barry 💖
+          <span>"Seni çok özledim!"</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Ortak Aktivite Zarı Penceresi -->
+  <div class="modal-backdrop" id="dice-modal" onclick="if(event.target===this)closeDiceModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="dice-title">Ortak Aktivite Zarı 🎲</h3>
+        <button class="close-btn" onclick="closeDiceModal()">✕</button>
+      </div>
+      <div class="sync-status" id="dice-sub">Kararsız kalınca zarı at!</div>
+      <div class="dice-box">
+        <div class="dice-result" id="dice-result">🎲 Hazır mısınız?</div>
+        <button class="roll-btn" onclick="rollDice()" id="roll-btn">Zarı At!</button>
+      </div>
+      <ul class="todo-list" id="dice-list" style="max-height: 150px;"></ul>
+      <div class="add-row">
+        <input type="text" id="dice-input" placeholder="Yeni aktivite ekle..." onkeypress="if(event.key==='Enter')addDiceOption()">
+        <button onclick="addDiceOption()" id="dice-add-btn">Ekle</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ====== JSONBIN CANLI ORTAK LİSTE AYARLARI ======
     const JSONBIN_ID = "6b05ff20ac6210605aa1c454";
     const JSONBIN_KEY = "$2a$10$TdiR7f6Dsf98mnzpBl9o3Ov44fVomZUrDxN6xaqYBMIZOzz9agw0m";
-    // ================================================
 
     const TARGET_UTC = Date.UTC(2026, 11, 19, 4, 35, 0);
     const START_UTC = Date.UTC(2026, 9, 1, 0, 0, 0);
     let currentLang = 'tr';
     let arrivedTriggered = false;
+    let isDraggingTodo = false;
 
     const i18n = {
       tr: {
@@ -592,10 +729,14 @@
         subtitle: "19 Aralık 2026, 13:35 (JST)",
         days: "GÜN", hours: "SAAT", minutes: "DAKİKA", seconds: "SANİYE",
         status: "● PLANLANAN VARIŞ", arrived: "● TOKYO'DA BULUŞULDU! ♥",
-        prog: "Yolculuk İlerlemesi", share: "Paylaş", copied: "Kopyalandı!",
+        prog: "Yolculuk İlerlemesi",
         planBtn: "Tokyo Planı 📋", modalTitle: "Tokyo Buluşma Planı ❤️",
         placeholder: "Yeni plan ekle...", add: "Ekle",
-        syncOk: "● Ortak liste senkronize", syncing: "↻ Kaydediliyor...",
+        syncOk: "● Ortak liste senkronize • Sıralamak için ⋮⋮ sürükle", syncing: "↻ Kaydediliyor...",
+        pingTitle: "Canlı Özledim Pingi 💌",
+        diceTitle: "Ortak Aktivite Zarı 🎲", diceSub: "Kararsız kalınca zarı at!",
+        rollBtn: "Zarı At!", dicePlaceholder: "Yeni aktivite ekle...",
+        moods: ["🌙 Uyku zamanı", "☀️ Güne başlıyor", "⚡ Gün ortası", "✨ Akşam keyfi"],
         loveNotes: [
           "T3 çıkış kapısında ilk sarılma için geri sayım başladı! ❤️",
           "Nerima sokaklarında el ele yürümeye çok az kaldı 🌸",
@@ -608,10 +749,14 @@
         subtitle: "Dec 19, 2026, 13:35 (JST)",
         days: "DAYS", hours: "HOURS", minutes: "MINUTES", seconds: "SECONDS",
         status: "● SCHEDULED ARRIVAL", arrived: "● REUNITED IN TOKYO! ♥",
-        prog: "Journey Progress", share: "Share", copied: "Copied!",
+        prog: "Journey Progress",
         planBtn: "Tokyo Plan 📋", modalTitle: "Tokyo Bucket List ❤️",
         placeholder: "Add a new plan...", add: "Add",
-        syncOk: "● Shared list synced", syncing: "↻ Saving...",
+        syncOk: "● Shared list synced • Drag ⋮⋮ to reorder", syncing: "↻ Saving...",
+        pingTitle: "Live Miss You Ping 💌",
+        diceTitle: "Couple Activity Dice 🎲", diceSub: "Roll when you can't decide!",
+        rollBtn: "Roll Dice!", dicePlaceholder: "Add new activity...",
+        moods: ["🌙 Sleeping hours", "☀️ Morning vibe", "⚡ Daytime hustle", "✨ Evening chill"],
         loveNotes: [
           "Counting down to our first hug at Haneda T3! ❤️",
           "Walking hand in hand through Nerima very soon 🌸",
@@ -635,13 +780,26 @@
       document.getElementById('lbl-minutes').textContent = t.minutes;
       document.getElementById('lbl-seconds').textContent = t.seconds;
       document.getElementById('prog-lbl').textContent = t.prog;
-      document.getElementById('share-btn').textContent = t.share;
       document.getElementById('plan-btn').textContent = t.planBtn;
       document.getElementById('modal-title').textContent = t.modalTitle;
       document.getElementById('todo-input').placeholder = t.placeholder;
       document.getElementById('add-btn').textContent = t.add;
       document.getElementById('sync-status').textContent = t.syncOk;
+      document.getElementById('ping-title').textContent = t.pingTitle;
+      document.getElementById('dice-title').textContent = t.diceTitle;
+      document.getElementById('dice-sub').textContent = t.diceSub;
+      document.getElementById('roll-btn').textContent = t.rollBtn;
+      document.getElementById('dice-input').placeholder = t.dicePlaceholder;
+      document.getElementById('dice-add-btn').textContent = t.add;
       update();
+    }
+
+    function getMoodForHour(h) {
+      const m = i18n[currentLang].moods;
+      if (h >= 0 && h < 7) return m[0];
+      if (h >= 7 && h < 12) return m[1];
+      if (h >= 12 && h < 18) return m[2];
+      return m[3];
     }
 
     function update() {
@@ -675,33 +833,35 @@
         document.getElementById('prog-fill').style.width = pct + "%";
       }
 
+      const dObj = new Date();
       const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-      document.getElementById('clock-ist').textContent = new Date().toLocaleTimeString('tr-TR', { ...opts, timeZone: 'Europe/Istanbul' });
-      document.getElementById('clock-tyo').textContent = new Date().toLocaleTimeString('ja-JP', { ...opts, timeZone: 'Asia/Tokyo' });
-    }
+      const istStr = dObj.toLocaleTimeString('tr-TR', { ...opts, timeZone: 'Europe/Istanbul' });
+      const tyoStr = dObj.toLocaleTimeString('ja-JP', { ...opts, timeZone: 'Asia/Tokyo' });
+      document.getElementById('clock-ist').textContent = istStr;
+      document.getElementById('clock-tyo').textContent = tyoStr;
 
-    function shareLink() {
-      if (navigator.share) {
-        navigator.share({ title: 'Marry & Barry — Tokyo', url: window.location.href });
-      } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(window.location.href);
-        document.getElementById('share-btn').textContent = i18n[currentLang].copied;
-        setTimeout(() => { document.getElementById('share-btn').textContent = i18n[currentLang].share; }, 2000);
-      }
+      const istHour = parseInt(istStr.split(':')[0], 10);
+      const tyoHour = parseInt(tyoStr.split(':')[0], 10);
+      document.getElementById('mood-ist').textContent = getMoodForHour(istHour);
+      document.getElementById('mood-tyo').textContent = getMoodForHour(tyoHour);
     }
 
     let noteIdx = 0;
     let toastTimer;
-    function showLoveNote() {
-      const notes = i18n[currentLang].loveNotes;
+    function triggerToast(msg, duration = 3400) {
       const toast = document.getElementById('love-toast');
-      toast.textContent = notes[noteIdx % notes.length];
-      noteIdx++;
+      toast.textContent = msg;
       toast.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
+    }
+    function showLoveNote() {
+      const notes = i18n[currentLang].loveNotes;
+      triggerToast(notes[noteIdx % notes.length]);
+      noteIdx++;
     }
 
+    /* Hava Durumu */
     function weatherIcon(code) {
       if (code === 0) return '☀️';
       if (code <= 3) return '⛅';
@@ -729,46 +889,61 @@
       } catch (e) {}
     }
 
-    /* Canlı Ortak Bucket List (JSONBin Senkronizasyonu) */
+    /* Bulut Veritabanı: Ortak Liste + Kalp Pingi + Aktivite Zarı */
     const defaultTodos = [
       { text: "Haneda T3 ilk sarılma 🤗", done: false },
       { text: "Photo booth'ta tatlı foto çekimi 📸", done: false },
       { text: "Nerima'da gece ramen & yürüyüş 🍜", done: false },
       { text: "Yeni yıl dileği & fotoğraf çekimi ✨", done: false }
     ];
+    const defaultDice = [
+      "Birlikte film / anime izleme gecesi 🎬",
+      "Photo booth'ta çılgın pozlar 📸",
+      "Ramen + gyoza keşif turu 🍜",
+      "10 dakikalık sesli özlem molası 🎧",
+      "Tokyo gece yürüyüşü & konbini tatlısı 🍡"
+    ];
+
     let todos = [...defaultTodos];
+    let diceOptions = [...defaultDice];
+    let lastPing = null;
+    let seenPingTs = Number(localStorage.getItem('mb_seen_ping_ts') || '0');
     let pollTimer = null;
 
-    function isCloudConfigured() {
-      return JSONBIN_ID && !JSONBIN_ID.includes("BURAYA") && JSONBIN_KEY && !JSONBIN_KEY.includes("BURAYA");
-    }
-
-    async function fetchCloudTodos() {
-      if (!isCloudConfigured()) {
-        todos = JSON.parse(localStorage.getItem('mb_tokyo_todos_v2') || 'null') || defaultTodos;
-        renderTodos();
-        return;
-      }
+    async function syncFromCloud(showAlertOnNewPing = true) {
+      if (isDraggingTodo) return;
       try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
           headers: { 'X-Master-Key': JSONBIN_KEY }
         });
         const data = await res.json();
-        if (data && data.record && Array.isArray(data.record.todos)) {
-          todos = data.record.todos;
+        if (data && data.record && !isDraggingTodo) {
+          if (Array.isArray(data.record.todos)) todos = data.record.todos;
+          if (Array.isArray(data.record.diceOptions) && data.record.diceOptions.length > 0) {
+            diceOptions = data.record.diceOptions;
+          }
+          if (data.record.lastPing && data.record.lastPing.ts) {
+            lastPing = data.record.lastPing;
+            updatePingInfo();
+            if (showAlertOnNewPing && lastPing.ts > seenPingTs) {
+              seenPingTs = lastPing.ts;
+              localStorage.setItem('mb_seen_ping_ts', String(seenPingTs));
+              const msg = currentLang === 'tr'
+                ? `💌 ${lastPing.from} seni çok özledi ve kalp gönderdi! ❤️`
+                : `💌 ${lastPing.from} misses you and sent a heart! ❤️`;
+              triggerToast(msg, 4500);
+              burstConfetti();
+            }
+          }
           renderTodos();
+          renderDiceList();
         }
       } catch (e) {}
     }
 
-    async function saveCloudTodos() {
-      renderTodos();
-      if (!isCloudConfigured()) {
-        localStorage.setItem('mb_tokyo_todos_v2', JSON.stringify(todos));
-        return;
-      }
+    async function pushToCloud() {
       const st = document.getElementById('sync-status');
-      st.textContent = i18n[currentLang].syncing;
+      if (st) st.textContent = i18n[currentLang].syncing;
       try {
         await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
           method: 'PUT',
@@ -776,20 +951,105 @@
             'Content-Type': 'application/json',
             'X-Master-Key': JSONBIN_KEY
           },
-          body: JSON.stringify({ todos })
+          body: JSON.stringify({ todos, diceOptions, lastPing })
         });
-        st.textContent = i18n[currentLang].syncOk;
+        if (st) st.textContent = i18n[currentLang].syncOk;
       } catch (e) {}
     }
 
+    /* Sürükle-Bırak (Mobil Dokunmatik + Masaüstü Fare) Destekli Todo Listesi */
     function renderTodos() {
       const list = document.getElementById('todo-list');
       list.innerHTML = '';
       todos.forEach((item, i) => {
         const li = document.createElement('li');
         li.className = 'todo-item' + (item.done ? ' done' : '');
-        li.innerHTML = `<span>${item.done ? '✅' : '⬜'} ${item.text}</span><button class="del-item" onclick="event.stopPropagation();delTodo(${i})">✕</button>`;
-        li.onclick = () => { todos[i].done = !todos[i].done; saveCloudTodos(); };
+        li.dataset.index = i;
+        li.innerHTML = `
+          <span class="todo-text">${item.done ? '✅' : '⬜'} ${item.text}</span>
+          <div class="todo-actions">
+            <span class="drag-handle" title="Sırala">⋮⋮</span>
+            <button class="del-item" onclick="event.stopPropagation();delTodo(${i})">✕</button>
+          </div>
+        `;
+
+        const textSpan = li.querySelector('.todo-text');
+        textSpan.onclick = () => {
+          if (isDraggingTodo) return;
+          todos[i].done = !todos[i].done;
+          renderTodos();
+          pushToCloud();
+        };
+
+        const handle = li.querySelector('.drag-handle');
+        let pressTimer = null;
+
+        const startDrag = (clientY) => {
+          isDraggingTodo = true;
+          li.classList.add('dragging');
+          const startIdx = Number(li.dataset.index);
+          let currentIdx = startIdx;
+
+          const onMove = (moveY) => {
+            const items = Array.from(list.querySelectorAll('.todo-item'));
+            items.forEach((targetEl, targetIdx) => {
+              if (targetEl === li) return;
+              const rect = targetEl.getBoundingClientRect();
+              const midY = rect.top + rect.height / 2;
+              if (moveY < midY && currentIdx > targetIdx) {
+                list.insertBefore(li, targetEl);
+                currentIdx = targetIdx;
+              } else if (moveY > midY && currentIdx < targetIdx) {
+                list.insertBefore(li, targetEl.nextSibling);
+                currentIdx = targetIdx;
+              }
+            });
+          };
+
+          const endDrag = () => {
+            document.removeEventListener('pointermove', handlePointerMove);
+            document.removeEventListener('pointerup', endDrag);
+            document.removeEventListener('pointercancel', endDrag);
+            li.classList.remove('dragging');
+            const newOrder = Array.from(list.querySelectorAll('.todo-item')).map(el => todos[Number(el.dataset.index)]);
+            const changed = JSON.stringify(newOrder) !== JSON.stringify(todos);
+            todos = newOrder;
+            setTimeout(() => { isDraggingTodo = false; }, 100);
+            renderTodos();
+            if (changed) pushToCloud();
+          };
+
+          const handlePointerMove = (e) => {
+            e.preventDefault();
+            onMove(e.clientY);
+          };
+
+          document.addEventListener('pointermove', handlePointerMove, { passive: false });
+          document.addEventListener('pointerup', endDrag);
+          document.addEventListener('pointercancel', endDrag);
+        };
+
+        /* Tutamaçtan doğrudan sürükleme */
+        handle.addEventListener('pointerdown', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          startDrag(e.clientY);
+        });
+
+        /* Maddenin üzerine 250ms basılı tutunca sürükleme */
+        li.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('.del-item') || e.target.closest('.drag-handle')) return;
+          const startY = e.clientY;
+          pressTimer = setTimeout(() => {
+            if (navigator.vibrate) navigator.vibrate(25);
+            startDrag(startY);
+          }, 250);
+        });
+        li.addEventListener('pointerup', () => clearTimeout(pressTimer));
+        li.addEventListener('pointermove', (e) => {
+          if (!isDraggingTodo && Math.abs(e.movementY) > 6) clearTimeout(pressTimer);
+        });
+
         list.appendChild(li);
       });
     }
@@ -800,24 +1060,127 @@
       if (!val) return;
       todos.push({ text: val, done: false });
       inp.value = '';
-      saveCloudTodos();
+      renderTodos();
+      pushToCloud();
     }
-
     function delTodo(i) {
       todos.splice(i, 1);
-      saveCloudTodos();
+      renderTodos();
+      pushToCloud();
     }
-
     function openModal() {
       renderTodos();
-      fetchCloudTodos();
+      syncFromCloud(false);
       document.getElementById('modal').classList.add('open');
-      pollTimer = setInterval(fetchCloudTodos, 5000);
+      pollTimer = setInterval(() => syncFromCloud(true), 5000);
     }
-
     function closeModal() {
       document.getElementById('modal').classList.remove('open');
       clearInterval(pollTimer);
+    }
+
+    /* Canlı Kalp Pingi */
+    function updatePingInfo() {
+      const el = document.getElementById('last-ping-info');
+      if (!el || !lastPing) return;
+      const d = new Date(lastPing.ts);
+      const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      el.textContent = currentLang === 'tr'
+        ? `Son kalp: ${lastPing.from} (${timeStr})`
+        : `Last heart: ${lastPing.from} (${timeStr})`;
+    }
+    async function sendHeartPing(sender) {
+      const nowTs = Date.now();
+      lastPing = { from: sender, ts: nowTs };
+      seenPingTs = nowTs;
+      localStorage.setItem('mb_seen_ping_ts', String(seenPingTs));
+      updatePingInfo();
+      closePingModal();
+      burstConfetti();
+      triggerToast(currentLang === 'tr'
+        ? `💌 ${sender} kalp gönderdi! ❤️`
+        : `💌 ${sender} sent a heart! ❤️`, 3500);
+      await pushToCloud();
+    }
+    function openPingModal() {
+      syncFromCloud(false);
+      document.getElementById('ping-modal').classList.add('open');
+    }
+    function closePingModal() {
+      document.getElementById('ping-modal').classList.remove('open');
+    }
+
+    /* Ortak Aktivite Zarı */
+    function renderDiceList() {
+      const list = document.getElementById('dice-list');
+      if (!list) return;
+      list.innerHTML = '';
+      diceOptions.forEach((opt, i) => {
+        const li = document.createElement('li');
+        li.className = 'todo-item';
+        li.innerHTML = `<span class="todo-text">🎲 ${opt}</span><button class="del-item" onclick="event.stopPropagation();delDice(${i})">✕</button>`;
+        list.appendChild(li);
+      });
+    }
+    function addDiceOption() {
+      const inp = document.getElementById('dice-input');
+      const val = inp.value.trim();
+      if (!val) return;
+      diceOptions.push(val);
+      inp.value = '';
+      renderDiceList();
+      pushToCloud();
+    }
+    function delDice(i) {
+      if (diceOptions.length <= 1) return;
+      diceOptions.splice(i, 1);
+      renderDiceList();
+      pushToCloud();
+    }
+    function rollDice() {
+      const resEl = document.getElementById('dice-result');
+      let ticks = 0;
+      const spin = setInterval(() => {
+        resEl.textContent = "🎲 " + diceOptions[Math.floor(Math.random() * diceOptions.length)];
+        ticks++;
+        if (ticks > 12) {
+          clearInterval(spin);
+          const pick = diceOptions[Math.floor(Math.random() * diceOptions.length)];
+          resEl.textContent = "✨ " + pick;
+          burstConfetti();
+        }
+      }, 75);
+    }
+    function openDiceModal() {
+      renderDiceList();
+      syncFromCloud(false);
+      document.getElementById('dice-modal').classList.add('open');
+    }
+    function closeDiceModal() {
+      document.getElementById('dice-modal').classList.remove('open');
+    }
+
+    /* Hikaye / Duvar Kağıdı Görseli İndir */
+    async function downloadPoster() {
+      const topbar = document.getElementById('topbar-ui');
+      const area = document.getElementById('capture-area');
+      topbar.style.visibility = 'hidden';
+      try {
+        const canvasImg = await html2canvas(area, {
+          useCORS: true,
+          scale: 2,
+          backgroundColor: '#160e26'
+        });
+        const link = document.createElement('a');
+        link.download = 'Marry-Barry-Tokyo-Reunion.png';
+        link.href = canvasImg.toDataURL('image/png');
+        link.click();
+        triggerToast(currentLang === 'tr' ? "📸 Görsel indirildi!" : "📸 Poster saved!", 2500);
+      } catch (e) {
+        triggerToast("Ekran görüntüsü alınamadı.", 2500);
+      } finally {
+        topbar.style.visibility = 'visible';
+      }
     }
 
     /* Özel Vektörel Sakura Yaprağı & Kalp Animasyonu */
@@ -906,7 +1269,8 @@
     update();
     setInterval(update, 1000);
     loadWeather();
-    fetchCloudTodos();
+    syncFromCloud(true);
+    setInterval(() => syncFromCloud(true), 15000);
     setTimeout(showLoveNote, 1200);
   </script>
 </body>
