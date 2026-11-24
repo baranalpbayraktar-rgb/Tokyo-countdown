@@ -13,7 +13,7 @@
 
     :root {
       --glass: rgba(15, 10, 28, 0.38);
-      --glass-strong: rgba(15, 10, 28, 0.50);
+      --glass-strong: rgba(15, 10, 28, 0.52);
       --border: rgba(255, 255, 255, 0.35);
       --accent: #f472b6;
       --accent-2: #a78bfa;
@@ -76,25 +76,29 @@
       position: absolute;
       top: 14px;
       left: 14px;
-      z-index: 2;
+      z-index: 4;
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
     .brand {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.4px;
       color: #ffffff;
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 999px;
       border: 1px solid var(--border);
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+      cursor: pointer;
+      transition: transform 0.15s ease;
     }
+    .brand:active { transform: scale(0.95); }
     .brand span { color: #ff85c0; }
 
     .lang-toggle {
@@ -121,7 +125,7 @@
       color: #ffffff;
     }
 
-    .share-btn {
+    .icon-btn {
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
@@ -129,13 +133,40 @@
       color: #ffffff;
       font-size: 11px;
       font-weight: 700;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 999px;
       cursor: pointer;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
     }
 
-    /* 1. Satırın (%0 - %33.3) tam bitişine yaslı Tokyo Reunion başlığı */
+    /* Aşk Notu Balonu */
+    .love-toast {
+      position: absolute;
+      top: 52px;
+      left: 14px;
+      right: 14px;
+      z-index: 5;
+      background: rgba(20, 12, 36, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(244, 114, 182, 0.6);
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #ffe4f2;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+    .love-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 1. Satırın tam bitişine yaslı Tokyo Reunion başlığı */
     .hero {
       position: absolute;
       bottom: 67.2%;
@@ -178,7 +209,7 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* 2. Satırın (%33.3 - %66.6) en tepesine yaslı sayaçlar */
+    /* 2. Satırın en tepesine yaslı sayaçlar */
     .grid {
       position: absolute;
       top: 34%;
@@ -232,12 +263,23 @@
     .ticket-top {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 9.5px;
       letter-spacing: 1px;
       color: #f8fafc;
       margin-bottom: 6px;
       font-weight: 700;
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
+    }
+    .plan-pill {
+      background: rgba(244, 114, 182, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: #fff;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
     }
     .route {
       display: flex;
@@ -294,7 +336,7 @@
       transition: width 0.5s ease;
     }
 
-    /* En alt sıradaki saat kartları */
+    /* En alt sıradaki ortalanmış saat + hava durumu kartları */
     .clocks {
       position: absolute;
       bottom: 16px;
@@ -311,7 +353,8 @@
       -webkit-backdrop-filter: blur(2.5px);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 9px 13px;
+      padding: 9px 10px;
+      text-align: center;
     }
     .clock-city {
       font-size: 12px;
@@ -326,10 +369,124 @@
       color: #ffffff;
       font-variant-numeric: tabular-nums;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+      line-height: 1.1;
+    }
+    .weather-line {
+      font-size: 11px;
+      color: #ffe4f2;
+      margin-top: 3px;
+      font-weight: 600;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
+    }
+
+    /* Bucket List Açılır Penceresi (Modal) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(9, 6, 18, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(22, 14, 38, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .modal-head h3 { font-size: 18px; color: #fff; }
+    .close-btn {
+      background: rgba(255,255,255,0.14);
+      border: none;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .todo-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .todo-item.done span {
+      text-decoration: line-through;
+      opacity: 0.55;
+    }
+    .del-item {
+      background: transparent;
+      border: none;
+      color: #fda4af;
+      font-size: 13px;
+      padding-left: 8px;
+      cursor: pointer;
+    }
+    .add-row {
+      display: flex;
+      gap: 6px;
+    }
+    .add-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .add-row button {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Sakura & Kalp Konfeti Kanvası */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 15;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
+  <canvas id="confetti-canvas"></canvas>
+
   <div class="stage">
     <div class="collage-bg">
       <img src="1.jpg" alt="">
@@ -342,13 +499,16 @@
     <div class="overlay"></div>
 
     <div class="topbar">
-      <div class="brand"><span>●</span> MARRY <span>♥</span> BARRY</div>
+      <div class="brand" onclick="showLoveNote()"><span>●</span> MARRY <span>♥</span> BARRY</div>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</button>
         <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
       </div>
-      <button class="share-btn" id="share-btn" onclick="shareLink()">Paylaş</button>
+      <button class="icon-btn" id="share-btn" onclick="shareLink()">Paylaş</button>
+      <button class="icon-btn" onclick="burstConfetti()" title="Sakura">🌸</button>
     </div>
+
+    <div class="love-toast" id="love-toast"></div>
 
     <div class="hero">
       <div class="badge">TOKYO HANEDA INTERNATIONAL • TERMINAL 3</div>
@@ -366,7 +526,7 @@
     <div class="ticket">
       <div class="ticket-top">
         <span id="status-txt">● PLANLANAN VARIŞ</span>
-        <span>REUNION PASS • HND-T3</span>
+        <button class="plan-pill" id="plan-btn" onclick="openModal()">Tokyo Planı 📋</button>
       </div>
       <div class="route">
         <div class="airport">
@@ -392,10 +552,27 @@
       <div class="clock-card">
         <div class="clock-city">🇹🇷 İstanbul</div>
         <div class="clock-time" id="clock-ist">--:--:--</div>
+        <div class="weather-line" id="weather-ist">🌤️ --°C</div>
       </div>
       <div class="clock-card">
         <div class="clock-city">🇯🇵 Tokyo</div>
         <div class="clock-time" id="clock-tyo">--:--:--</div>
+        <div class="weather-line" id="weather-tyo">🌸 --°C</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tokyo Bucket List Penceresi -->
+  <div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modal-title">Tokyo Buluşma Planı ❤️</h3>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <ul class="todo-list" id="todo-list"></ul>
+      <div class="add-row">
+        <input type="text" id="todo-input" placeholder="Yeni plan ekle..." onkeypress="if(event.key==='Enter')addTodo()">
+        <button onclick="addTodo()" id="add-btn">Ekle</button>
       </div>
     </div>
   </div>
@@ -404,6 +581,7 @@
     const TARGET_UTC = Date.UTC(2026, 11, 19, 4, 35, 0);
     const START_UTC = Date.UTC(2026, 9, 1, 0, 0, 0);
     let currentLang = 'tr';
+    let arrivedTriggered = false;
 
     const i18n = {
       tr: {
@@ -411,14 +589,30 @@
         subtitle: "19 Aralık 2026, 13:35 (JST)",
         days: "GÜN", hours: "SAAT", minutes: "DAKİKA", seconds: "SANİYE",
         status: "● PLANLANAN VARIŞ", arrived: "● TOKYO'DA BULUŞULDU! ♥",
-        prog: "Yolculuk İlerlemesi", share: "Paylaş", copied: "Kopyalandı!"
+        prog: "Yolculuk İlerlemesi", share: "Paylaş", copied: "Kopyalandı!",
+        planBtn: "Tokyo Planı 📋", modalTitle: "Tokyo Buluşma Planı ❤️",
+        placeholder: "Yeni plan ekle...", add: "Ekle",
+        loveNotes: [
+          "T3 çıkış kapısında ilk sarılma için geri sayım başladı! ❤️",
+          "Nerima sokaklarında el ele yürümeye çok az kaldı 🌸",
+          "Bavul hazır mı Barry? Marry Tokyo'da bekliyor! ✈️",
+          "Aynı gökyüzünün altında, aynı saniyeye sayıyoruz ♥"
+        ]
       },
       en: {
         title: "Tokyo Reunion ❤️",
         subtitle: "Dec 19, 2026, 13:35 (JST)",
         days: "DAYS", hours: "HOURS", minutes: "MINUTES", seconds: "SECONDS",
         status: "● SCHEDULED ARRIVAL", arrived: "● REUNITED IN TOKYO! ♥",
-        prog: "Journey Progress", share: "Share", copied: "Copied!"
+        prog: "Journey Progress", share: "Share", copied: "Copied!",
+        planBtn: "Tokyo Plan 📋", modalTitle: "Tokyo Bucket List ❤️",
+        placeholder: "Add a new plan...", add: "Add",
+        loveNotes: [
+          "Counting down to our first hug at Haneda T3! ❤️",
+          "Walking hand in hand through Nerima very soon 🌸",
+          "Bags packed Barry? Marry is waiting in Tokyo! ✈️",
+          "Under the same sky, counting down to the exact second ♥"
+        ]
       }
     };
 
@@ -437,6 +631,10 @@
       document.getElementById('lbl-seconds').textContent = t.seconds;
       document.getElementById('prog-lbl').textContent = t.prog;
       document.getElementById('share-btn').textContent = t.share;
+      document.getElementById('plan-btn').textContent = t.planBtn;
+      document.getElementById('modal-title').textContent = t.modalTitle;
+      document.getElementById('todo-input').placeholder = t.placeholder;
+      document.getElementById('add-btn').textContent = t.add;
       update();
     }
 
@@ -453,6 +651,7 @@
         document.getElementById('status-txt').textContent = t.arrived;
         document.getElementById('prog-pct').textContent = "100.0%";
         document.getElementById('prog-fill').style.width = "100%";
+        if (!arrivedTriggered) { arrivedTriggered = true; burstConfetti(); }
       } else {
         const d = Math.floor(diff / 86400000);
         const h = Math.floor((diff % 86400000) / 3600000);
@@ -485,8 +684,130 @@
       }
     }
 
+    /* Aşk Notu Balonu */
+    let noteIdx = 0;
+    let toastTimer;
+    function showLoveNote() {
+      const notes = i18n[currentLang].loveNotes;
+      const toast = document.getElementById('love-toast');
+      toast.textContent = notes[noteIdx % notes.length];
+      noteIdx++;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    /* Canlı Hava Durumu (İstanbul & Tokyo) */
+    function weatherIcon(code) {
+      if (code === 0) return '☀️';
+      if (code <= 3) return '⛅';
+      if (code <= 48) return '🌫️';
+      if (code <= 67) return '🌧️';
+      if (code <= 77) return '❄️';
+      return '🌦️';
+    }
+    async function loadWeather() {
+      try {
+        const [istRes, tyoRes] = await Promise.all([
+          fetch('https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true'),
+          fetch('https://api.open-meteo.com/v1/forecast?latitude=35.68&longitude=139.69&current_weather=true')
+        ]);
+        const ist = await istRes.json();
+        const tyo = await tyoRes.json();
+        if (ist.current_weather) {
+          document.getElementById('weather-ist').textContent =
+            `${weatherIcon(ist.current_weather.weathercode)} ${Math.round(ist.current_weather.temperature)}°C`;
+        }
+        if (tyo.current_weather) {
+          document.getElementById('weather-tyo').textContent =
+            `${weatherIcon(tyo.current_weather.weathercode)} ${Math.round(tyo.current_weather.temperature)}°C`;
+        }
+      } catch (e) {}
+    }
+
+    /* Bucket List Yönetimi */
+    const defaultTodos = [
+      { text: "Haneda T3 ilk sarılma 🤗", done: false },
+      { text: "Winter Comiket & Cosplay günü 🎭", done: false },
+      { text: "Nerima'da gece ramen & yürüyüş 🍜", done: false },
+      { text: "Yeni yıl dileği & fotoğraf çekimi ✨", done: false }
+    ];
+    let todos = JSON.parse(localStorage.getItem('mb_tokyo_todos') || 'null') || defaultTodos;
+
+    function renderTodos() {
+      const list = document.getElementById('todo-list');
+      list.innerHTML = '';
+      todos.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.className = 'todo-item' + (item.done ? ' done' : '');
+        li.innerHTML = `<span>${item.done ? '✅' : '⬜'} ${item.text}</span><button class="del-item" onclick="event.stopPropagation();delTodo(${i})">✕</button>`;
+        li.onclick = () => { todos[i].done = !todos[i].done; saveTodos(); };
+        list.appendChild(li);
+      });
+    }
+    function saveTodos() {
+      localStorage.setItem('mb_tokyo_todos', JSON.stringify(todos));
+      renderTodos();
+    }
+    function addTodo() {
+      const inp = document.getElementById('todo-input');
+      const val = inp.value.trim();
+      if (!val) return;
+      todos.push({ text: val, done: false });
+      inp.value = '';
+      saveTodos();
+    }
+    function delTodo(i) {
+      todos.splice(i, 1);
+      saveTodos();
+    }
+    function openModal() { renderTodos(); document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    /* Sakura & Kalp Konfeti Efekti */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let petals = [];
+    let animId = null;
+
+    function burstConfetti() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const icons = ['🌸', '❤️', '💖', '✨'];
+      for (let i = 0; i < 45; i++) {
+        petals.push({
+          x: Math.random() * canvas.width,
+          y: -20 - Math.random() * 200,
+          size: 14 + Math.random() * 14,
+          speedY: 1.5 + Math.random() * 2.5,
+          speedX: (Math.random() - 0.5) * 1.8,
+          rot: Math.random() * 360,
+          icon: icons[Math.floor(Math.random() * icons.length)]
+        });
+      }
+      if (!animId) animatePetals();
+    }
+
+    function animatePetals() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      petals.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX + Math.sin(p.y / 30) * 0.6;
+        ctx.font = `${p.size}px serif`;
+        ctx.fillText(p.icon, p.x, p.y);
+      });
+      petals = petals.filter(p => p.y < canvas.height + 30);
+      if (petals.length > 0) {
+        animId = requestAnimationFrame(animatePetals);
+      } else {
+        animId = null;
+      }
+    }
+
     update();
     setInterval(update, 1000);
+    loadWeather();
+    setTimeout(showLoveNote, 1200);
   </script>
 </body>
 </html>
