@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baran & Mel — Tokyo Reunion</title>
+  <style>
+    :root {
+      --bg-1: #0b0714;
+      --bg-2: #170f29;
+      --card: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent: #f472b6;
+      --accent-2: #a78bfa;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #24143e 0%, var(--bg-1) 65%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px 16px 40px;
+    }
+    .container { width: 100%; max-width: 520px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 8px;
+    }
+    .brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+    .actions { display: flex; gap: 8px; align-items: center; }
+    .lang-toggle {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .share-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .badge {
+      display: inline-block;
+      margin: 0 auto 14px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(244, 114, 182, 0.12);
+      border: 1px solid rgba(244, 114, 182, 0.35);
+      color: #f9a8d4;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+    .hero { text-align: center; margin-bottom: 24px; }
+    h1 {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 12px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .num {
+      font-size: 42px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(135deg, #fff 30%, #f9a8d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .ticket {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .ticket-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    .route {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .airport h2 { font-size: 26px; font-weight: 800; }
+    .airport p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .airport.right { text-align: right; }
+    .plane {
+      text-align: center;
+      color: var(--accent);
+      font-size: 18px;
+    }
+    .plane span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .progress-wrap { margin-top: 10px; }
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .bar {
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+    .clocks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .clock-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .clock-city { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .clock-time { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">● BARAN ♥ MEL</div>
+      <div class="actions">
+        <div class="lang-toggle">
+          <button class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</button>
+          <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        </div>
+        <button class="share-btn" id="share-btn" onclick="shareLink()">Paylaş</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="badge">TOKYO HANEDA INTERNATIONAL • TERMINAL 3</div>
+      <h1 id="title">Tokyo Buluşmasına Kalan Süre</h1>
+      <p class="subtitle" id="subtitle">19 Aralık 2026, 13:35 (JST) — Dünyanın neresinde olursak olalım, aynı saniyeye geri sayıyoruz.</p>
+    </div>
+
+    <div class="grid">
+      <div class="box"><div class="num" id="days">00</div><div class="label" id="lbl-days">GÜN</div></div>
+      <div class="box"><div class="num" id="hours">00</div><div class="label" id="lbl-hours">SAAT</div></div>
+      <div class="box"><div class="num" id="minutes">00</div><div class="label" id="lbl-minutes">DAKİKA</div></div>
+      <div class="box"><div class="num" id="seconds">00</div><div class="label" id="lbl-seconds">SANİYE</div></div>
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-top">
+        <span id="status-txt">● PLANLANAN VARIŞ</span>
+        <span>REUNION PASS • HND-T3</span>
+      </div>
+      <div class="route">
+        <div class="airport">
+          <h2>IST</h2>
+          <p>İstanbul (UTC+3)</p>
+        </div>
+        <div class="plane">✈<span>~8,950 KM</span></div>
+        <div class="airport right">
+          <h2>HND</h2>
+          <p>Tokyo Haneda (UTC+9)</p>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-head">
+          <span id="prog-lbl">Yolculuk İlerlemesi</span>
+          <span id="prog-pct">0.0%</span>
+        </div>
+        <div class="bar"><div class="fill" id="prog-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="clocks">
+      <div class="clock-card">
+        <div class="clock-city">🇹🇷 İstanbul</div>
+        <div class="clock-time" id="clock-ist">--:--:--</div>
+      </div>
+      <div class="clock-card">
+        <div class="clock-city">🇯🇵 Tokyo</div>
+        <div class="clock-time" id="clock-tyo">--:--:--</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TARGET_UTC = Date.UTC(2026, 11, 19, 4, 35, 0); // 19 Dec 2026 13:35 JST (UTC+9)
+    const START_UTC = Date.UTC(2026, 8, 1, 0, 0, 0);
+    let currentLang = 'tr';
+
+    const i18n = {
+      tr: {
+        title: "Tokyo Buluşmasına Kalan Süre",
+        subtitle: "19 Aralık 2026, 13:35 (JST) — Dünyanın neresinde olursak olalım, aynı saniyeye geri sayıyoruz.",
+        days: "GÜN", hours: "SAAT", minutes: "DAKİKA", seconds: "SANİYE",
+        status: "● PLANLANAN VARIŞ", arrived: "● TOKYO'DA BULUŞULDU! ♥",
+        prog: "Yolculuk İlerlemesi", share: "Paylaş", copied: "Kopyalandı!"
+      },
+      en: {
+        title: "Countdown to Tokyo Reunion",
+        subtitle: "Dec 19, 2026, 13:35 (JST) — Counting down to the exact same second wherever we are.",
+        days: "DAYS", hours: "HOURS", minutes: "MINUTES", seconds: "SECONDS",
+        status: "● SCHEDULED ARRIVAL", arrived: "● REUNITED IN TOKYO! ♥",
+        prog: "Journey Progress", share: "Share", copied: "Copied!"
+      }
+    };
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      const t = i18n[lang];
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('lbl-days').textContent = t.days;
+      document.getElementById('lbl-hours').textContent = t.hours;
+      document.getElementById('lbl-minutes').textContent = t.minutes;
+      document.getElementById('lbl-seconds').textContent = t.seconds;
+      document.getElementById('prog-lbl').textContent = t.prog;
+      document.getElementById('share-btn').textContent = t.share;
+      update();
+    }
+
+    function update() {
+      const now = Date.now();
+      const diff = TARGET_UTC - now;
+      const t = i18n[currentLang];
+
+      if (diff <= 0) {
+        document.getElementById('days').textContent = "00";
+        document.getElementById('hours').textContent = "00";
+        document.getElementById('minutes').textContent = "00";
+        document.getElementById('seconds').textContent = "00";
+        document.getElementById('status-txt').textContent = t.arrived;
+        document.getElementById('prog-pct').textContent = "100.0%";
+        document.getElementById('prog-fill').style.width = "100%";
+      } else {
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+
+        document.getElementById('days').textContent = pad(d);
+        document.getElementById('hours').textContent = pad(h);
+        document.getElementById('minutes').textContent = pad(m);
+        document.getElementById('seconds').textContent = pad(s);
+        document.getElementById('status-txt').textContent = t.status;
+
+        const pct = Math.min(100, Math.max(0, ((now - START_UTC) / (TARGET_UTC - START_UTC)) * 100));
+        document.getElementById('prog-pct').textContent = pct.toFixed(1) + "%";
+        document.getElementById('prog-fill').style.width = pct + "%";
+      }
+
+      const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      document.getElementById('clock-ist').textContent = new Date().toLocaleTimeString('tr-TR', { ...opts, timeZone: 'Europe/Istanbul' });
+      document.getElementById('clock-tyo').textContent = new Date().toLocaleTimeString('ja-JP', { ...opts, timeZone: 'Asia/Tokyo' });
+    }
+
+    function shareLink() {
+      if (navigator.share) {
+        navigator.share({ title: 'Baran & Mel — Tokyo', url: window.location.href });
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+        document.getElementById('share-btn').textContent = i18n[currentLang].copied;
+        setTimeout(() => { document.getElementById('share-btn').textContent = i18n[currentLang].share; }, 2000);
+      }
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
