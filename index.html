@@ -85,7 +85,7 @@
     }
     .hero { text-align: center; margin-bottom: 24px; }
     h1 {
-      font-size: 30px;
+      font-size: 32px;
       line-height: 1.2;
       margin-bottom: 10px;
       font-weight: 800;
@@ -212,8 +212,8 @@
 
     <div class="hero">
       <div class="badge">TOKYO HANEDA INTERNATIONAL • TERMINAL 3</div>
-      <h1 id="title">Tokyo Buluşmasına Kalan Süre</h1>
-      <p class="subtitle" id="subtitle">19 Aralık 2026, 13:35 (JST) — Dünyanın neresinde olursak olalım, aynı saniyeye geri sayıyoruz.</p>
+      <h1 id="title">Tokyo Reunion</h1>
+      <p class="subtitle" id="subtitle">19 Aralık 2026, 13:35 (JST)</p>
     </div>
 
     <div class="grid">
@@ -262,20 +262,20 @@
 
   <script>
     const TARGET_UTC = Date.UTC(2026, 11, 19, 4, 35, 0); // 19 Dec 2026 13:35 JST (UTC+9)
-    const START_UTC = Date.UTC(2026, 8, 1, 0, 0, 0);
+    const START_UTC = Date.UTC(2026, 9, 1, 0, 0, 0);   // 1 Oct 2026
     let currentLang = 'tr';
 
     const i18n = {
       tr: {
-        title: "Tokyo Buluşmasına Kalan Süre",
-        subtitle: "19 Aralık 2026, 13:35 (JST) — Dünyanın neresinde olursak olalım, aynı saniyeye geri sayıyoruz.",
+        title: "Tokyo Reunion",
+        subtitle: "19 Aralık 2026, 13:35 (JST)",
         days: "GÜN", hours: "SAAT", minutes: "DAKİKA", seconds: "SANİYE",
         status: "● PLANLANAN VARIŞ", arrived: "● TOKYO'DA BULUŞULDU! ♥",
         prog: "Yolculuk İlerlemesi", share: "Paylaş", copied: "Kopyalandı!"
       },
       en: {
-        title: "Countdown to Tokyo Reunion",
-        subtitle: "Dec 19, 2026, 13:35 (JST) — Counting down to the exact same second wherever we are.",
+        title: "Tokyo Reunion",
+        subtitle: "Dec 19, 2026, 13:35 (JST)",
         days: "DAYS", hours: "HOURS", minutes: "MINUTES", seconds: "SECONDS",
         status: "● SCHEDULED ARRIVAL", arrived: "● REUNITED IN TOKYO! ♥",
         prog: "Journey Progress", share: "Share", copied: "Copied!"
