@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Baran & Mel — Tokyo Reunion ❤️</title>
+  <title>Marry & Barry — Tokyo Reunion ❤️</title>
   <style>
     @font-face {
       font-family: 'CustomFont';
@@ -35,7 +35,6 @@
       overflow-x: hidden;
     }
 
-    /* 150vh yükseklik: Her satır %50 ekran kaplar, yüzlerin altında geniş boşluk açılır */
     .stage {
       width: 100%;
       max-width: 500px;
@@ -72,7 +71,7 @@
       pointer-events: none;
     }
 
-    /* Üst Bar: Sol üstte toplu */
+    /* Üst Bar */
     .topbar {
       position: absolute;
       top: 14px;
@@ -136,16 +135,13 @@
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
     }
 
-    /* 1. Blok: 1. Satırın (%0-%33.3) en altındaki boşluğa oturur */
-    .top-cluster {
+    /* 1. Satırın (%0 - %33.3) tam bitişine yaslı Tokyo Reunion başlığı */
+    .hero {
       position: absolute;
-      top: 21%;
+      bottom: 67.2%;
       left: 14px;
       right: 14px;
       z-index: 2;
-    }
-
-    .hero {
       text-align: center;
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
@@ -153,7 +149,6 @@
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 9px 10px;
-      margin-bottom: 8px;
     }
     .badge {
       display: inline-block;
@@ -183,7 +178,13 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
+    /* 2. Satırın (%33.3 - %66.6) en tepesine yaslı sayaçlar */
     .grid {
+      position: absolute;
+      top: 34%;
+      left: 14px;
+      right: 14px;
+      z-index: 2;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 7px;
@@ -214,7 +215,7 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* 2. Blok: 2. Satırın (%33.3-%66.6) en alt çizgisine iner */
+    /* 2. Satırın alt çizgisindeki uçuş kartı */
     .ticket {
       position: absolute;
       top: 56.5%;
@@ -293,7 +294,7 @@
       transition: width 0.5s ease;
     }
 
-    /* 3. Blok: En alt sıranın tişört/bluz boşluğunda */
+    /* En alt sıradaki saat kartları */
     .clocks {
       position: absolute;
       bottom: 16px;
@@ -341,7 +342,7 @@
     <div class="overlay"></div>
 
     <div class="topbar">
-      <div class="brand"><span>●</span> BARAN <span>♥</span> MEL</div>
+      <div class="brand"><span>●</span> MARRY <span>♥</span> BARRY</div>
       <div class="lang-toggle">
         <button class="lang-btn active" id="btn-tr" onclick="setLang('tr')">TR</button>
         <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
@@ -349,19 +350,17 @@
       <button class="share-btn" id="share-btn" onclick="shareLink()">Paylaş</button>
     </div>
 
-    <div class="top-cluster">
-      <div class="hero">
-        <div class="badge">TOKYO HANEDA INTERNATIONAL • TERMINAL 3</div>
-        <h1 id="title">Tokyo Reunion ❤️</h1>
-        <p class="subtitle" id="subtitle">19 Aralık 2026, 13:35 (JST)</p>
-      </div>
+    <div class="hero">
+      <div class="badge">TOKYO HANEDA INTERNATIONAL • TERMINAL 3</div>
+      <h1 id="title">Tokyo Reunion ❤️</h1>
+      <p class="subtitle" id="subtitle">19 Aralık 2026, 13:35 (JST)</p>
+    </div>
 
-      <div class="grid">
-        <div class="box"><div class="num" id="days">00</div><div class="label" id="lbl-days">GÜN</div></div>
-        <div class="box"><div class="num" id="hours">00</div><div class="label" id="lbl-hours">SAAT</div></div>
-        <div class="box"><div class="num" id="minutes">00</div><div class="label" id="lbl-minutes">DAKİKA</div></div>
-        <div class="box"><div class="num" id="seconds">00</div><div class="label" id="lbl-seconds">SANİYE</div></div>
-      </div>
+    <div class="grid">
+      <div class="box"><div class="num" id="days">00</div><div class="label" id="lbl-days">GÜN</div></div>
+      <div class="box"><div class="num" id="hours">00</div><div class="label" id="lbl-hours">SAAT</div></div>
+      <div class="box"><div class="num" id="minutes">00</div><div class="label" id="lbl-minutes">DAKİKA</div></div>
+      <div class="box"><div class="num" id="seconds">00</div><div class="label" id="lbl-seconds">SANİYE</div></div>
     </div>
 
     <div class="ticket">
@@ -478,7 +477,7 @@
 
     function shareLink() {
       if (navigator.share) {
-        navigator.share({ title: 'Baran & Mel — Tokyo', url: window.location.href });
+        navigator.share({ title: 'Marry & Barry — Tokyo', url: window.location.href });
       } else if (navigator.clipboard) {
         navigator.clipboard.writeText(window.location.href);
         document.getElementById('share-btn').textContent = i18n[currentLang].copied;
