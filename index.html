@@ -12,8 +12,8 @@
     }
 
     :root {
-      --glass: rgba(15, 10, 28, 0.28);
-      --glass-strong: rgba(15, 10, 28, 0.42);
+      --glass: rgba(15, 10, 28, 0.36);
+      --glass-strong: rgba(15, 10, 28, 0.48);
       --border: rgba(255, 255, 255, 0.35);
       --accent: #f472b6;
       --accent-2: #a78bfa;
@@ -33,12 +33,12 @@
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 16px 14px 28px;
+      padding: 12px 12px 20px;
       position: relative;
       overflow-x: hidden;
     }
 
-    /* Sabit boyutlu arka plan: Kaydırırken scale/zoom değişmez */
+    /* Sabit boyutlu 6'lı fotoğraf ızgarası */
     .collage-bg {
       position: absolute;
       top: 0;
@@ -65,18 +65,17 @@
       position: absolute;
       inset: 0;
       z-index: -1;
-      background: rgba(12, 8, 22, 0.14);
+      background: rgba(12, 8, 22, 0.12);
     }
 
     .container {
       width: 100%;
       max-width: 500px;
+      min-height: calc(100vh - 32px);
       position: relative;
       z-index: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 14px;
     }
 
     .topbar {
@@ -87,7 +86,7 @@
     }
 
     .brand {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       letter-spacing: 2px;
       color: #ffffff;
@@ -97,7 +96,7 @@
       padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     }
     .brand span { color: #ff85c0; }
 
@@ -116,9 +115,9 @@
       background: transparent;
       border: none;
       color: #f1f5f9;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 4px 9px;
+      padding: 4px 8px;
       border-radius: 999px;
       cursor: pointer;
     }
@@ -133,99 +132,104 @@
       -webkit-backdrop-filter: blur(3px);
       border: 1px solid var(--border);
       color: #ffffff;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       padding: 6px 12px;
       border-radius: 999px;
       cursor: pointer;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     }
 
-    /* Daha kompakt ve şeffaf başlık kartı */
+    /* Turkuaz Ok: 1. ve 2. fotoğraftaki yüzlerin altına kaydırılmış başlık */
     .hero {
       text-align: center;
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 12px 12px;
+      border-radius: 18px;
+      padding: 10px 10px;
+      margin-top: 16vh;
+      margin-bottom: 10px;
     }
     .badge {
       display: inline-block;
-      margin-bottom: 6px;
-      padding: 3px 10px;
+      margin-bottom: 4px;
+      padding: 2px 9px;
       border-radius: 999px;
       background: rgba(244, 114, 182, 0.32);
       border: 1px solid rgba(255, 255, 255, 0.45);
       color: #ffffff;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 1.3px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+      letter-spacing: 1.2px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     }
     h1 {
-      font-size: 30px;
+      font-size: 27px;
       line-height: 1.15;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       font-weight: 800;
       color: #ffffff;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
     }
     .subtitle {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       color: #ffe4f2;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* Çok hafif blur ve daha küçük sayaç kutuları */
+    /* Kırmızı Ok: 4 sayaç yan yana tek ince şerit (3 ve 4. fotoların yüzleri tamamen açık) */
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 19vh;
     }
     .box {
       background: var(--glass);
       backdrop-filter: blur(2.5px);
       -webkit-backdrop-filter: blur(2.5px);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 12px 10px;
+      border-radius: 14px;
+      padding: 9px 4px;
       text-align: center;
     }
     .num {
-      font-size: 40px;
+      font-size: 28px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
       color: #ffffff;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 16px rgba(0, 0, 0, 0.75);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
       line-height: 1.05;
       margin-bottom: 2px;
     }
     .label {
-      font-size: 11px;
-      letter-spacing: 2px;
+      font-size: 9px;
+      letter-spacing: 1.2px;
       color: #ffffff;
       font-weight: 700;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
+    /* Sarı Ok: Orta-alt geçiş çizgisine indirilen uçuş kartı */
     .ticket {
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 13px 14px;
+      border-radius: 18px;
+      padding: 11px 13px;
+      margin-bottom: 16vh;
     }
     .ticket-top {
       display: flex;
       justify-content: space-between;
-      font-size: 10px;
-      letter-spacing: 1.2px;
+      font-size: 9px;
+      letter-spacing: 1px;
       color: #f8fafc;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       font-weight: 700;
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
@@ -233,45 +237,45 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .airport h2 {
-      font-size: 23px;
+      font-size: 21px;
       font-weight: 800;
       color: #ffffff;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
     }
     .airport p {
-      font-size: 11px;
+      font-size: 10px;
       color: #f1f5f9;
-      margin-top: 2px;
+      margin-top: 1px;
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
     .airport.right { text-align: right; }
     .plane {
       text-align: center;
       color: #ff99cc;
-      font-size: 18px;
+      font-size: 16px;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
     .plane span {
       display: block;
-      font-size: 10px;
+      font-size: 9px;
       color: #ffffff;
-      margin-top: 2px;
+      margin-top: 1px;
     }
-    .progress-wrap { margin-top: 6px; }
+    .progress-wrap { margin-top: 4px; }
     .progress-head {
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
     .bar {
-      height: 7px;
+      height: 6px;
       background: rgba(255, 255, 255, 0.28);
       border-radius: 999px;
       overflow: hidden;
@@ -284,18 +288,20 @@
       transition: width 0.5s ease;
     }
 
+    /* Mavi Ok: En alttaki 5. ve 6. fotoğraftaki yüzlerin altına inen saat kartları */
     .clocks {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      margin-top: auto;
     }
     .clock-card {
       background: var(--glass);
       backdrop-filter: blur(2.5px);
       -webkit-backdrop-filter: blur(2.5px);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 10px 12px;
+      border-radius: 14px;
+      padding: 8px 12px;
     }
     .clock-city {
       font-size: 11px;
@@ -305,7 +311,7 @@
       text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95);
     }
     .clock-time {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
       color: #ffffff;
       font-variant-numeric: tabular-nums;
