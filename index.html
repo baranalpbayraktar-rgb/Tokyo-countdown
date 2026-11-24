@@ -33,7 +33,7 @@
       color: var(--text);
       display: flex;
       justify-content: center;
-      padding: 12px 12px 20px;
+      padding: 12px 12px 14px;
       position: relative;
       overflow-x: hidden;
     }
@@ -71,7 +71,7 @@
     .container {
       width: 100%;
       max-width: 500px;
-      min-height: calc(100vh - 32px);
+      min-height: calc(100vh - 26px);
       position: relative;
       z-index: 1;
       display: flex;
@@ -140,7 +140,7 @@
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     }
 
-    /* Turkuaz Ok: 1. ve 2. fotoğraftaki yüzlerin altına kaydırılmış başlık */
+    /* Üst Sıra: Tam oturduğu için korundu */
     .hero {
       text-align: center;
       background: var(--glass-strong);
@@ -180,12 +180,12 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* Kırmızı Ok: 4 sayaç yan yana tek ince şerit (3 ve 4. fotoların yüzleri tamamen açık) */
+    /* Sayaçlar: 3. fotodaki yüzün tamamen açılması için alt boşluk artırıldı */
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 7px;
-      margin-bottom: 19vh;
+      margin-bottom: 24vh;
     }
     .box {
       background: var(--glass);
@@ -213,7 +213,7 @@
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
     }
 
-    /* Sarı Ok: Orta-alt geçiş çizgisine indirilen uçuş kartı */
+    /* Uçuş Kartı: 3. ve 4. fotonun en alt çizgisine indirildi */
     .ticket {
       background: var(--glass-strong);
       backdrop-filter: blur(3px);
@@ -221,7 +221,7 @@
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 11px 13px;
-      margin-bottom: 16vh;
+      margin-bottom: 22vh;
     }
     .ticket-top {
       display: flex;
@@ -288,12 +288,13 @@
       transition: width 0.5s ease;
     }
 
-    /* Mavi Ok: En alttaki 5. ve 6. fotoğraftaki yüzlerin altına inen saat kartları */
+    /* Saat Kartları: En alttaki 5. ve 6. fotonun tişört/omuz hizasına indirildi */
     .clocks {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: auto;
+      padding-bottom: 4px;
     }
     .clock-card {
       background: var(--glass);
